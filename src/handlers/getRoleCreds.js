@@ -1,4 +1,3 @@
-require('dotenv').config();
 const AWS = require('aws-sdk');
 
 let getRoleCredentials = async (accountId, roleName, sessionName) => {

@@ -4,7 +4,6 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "dotenv": "^8.2.0"
     },
     "devDependencies": {
         "jest": "^24.7.1"

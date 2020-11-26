@@ -1,4 +1,3 @@
-require('dotenv').config();
 const AWS = require('aws-sdk');
 const getRoleCredentials = require('./getRoleCreds');
 const getActiveAccountIds = require('./organizations');
