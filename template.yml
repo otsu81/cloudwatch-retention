@@ -81,6 +81,6 @@ Resources:
           ROLENAME: !Ref RoleName
           OUT_OF_SCOPE_ACCOUNTS: !Ref OutOfScopeAccounts
           SESSION_NAME: !Ref SessionName
-          RETENTIONTIME: !Ref RetentionTime
+          RETENTION_TIME: !Ref RetentionTime
 
 

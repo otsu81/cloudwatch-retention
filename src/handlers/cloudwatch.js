@@ -46,7 +46,7 @@ const getLogs = async(params, retryCount = 0, lastError = null) => {
                 console.log(r.arn)
                 // cwl.putRetentionPolicy({
                 //     logGroupName: x.logGroupName,
-                //     retentionInDays: '365'
+                //     retentionInDays: process.env.RETENTION_TIME,
                 // }, function(err, data){});
             }
         }
