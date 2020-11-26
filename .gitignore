@@ -3,3 +3,4 @@ node_modules/
 *sandbox*
 .DS_Store
 samconfig*
+.aws-sam/
