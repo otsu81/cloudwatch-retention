@@ -70,12 +70,17 @@ Resources:
   cloudwatchRetentionSetter:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/cloudwatch.handler
+      Handler: src/handlers/handler.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: nodejs12.x
       MemorySize: 512
       Timeout: 900
       Description: Iterates over AWS accounts in search for CloudWatch logs to set a specified retention policy on
+      Events:
+        SetterSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 1 * * ? *) # runs every day at 01:00
       Environment:
         Variables:
           ROLENAME: !Ref RoleName
