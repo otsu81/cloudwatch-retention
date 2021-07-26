@@ -38,30 +38,31 @@ const setRetention = async(cwlClient, retryCount = 0, lastError = null) => {
         let logGroups = await getLogGroups(cwlClient);
         for (let l of logGroups) {
             if (typeof(l.retentionInDays) == 'undefined') {
-                console.log(l.arn)
+                console.log(`Setting retention for: ${l.arn}`)
                 cwlClient.putRetentionPolicy({
                     logGroupName: l.logGroupName,
                     retentionInDays: process.env.RETENTION_TIME,
                 }, function(err, data){
                     if (err) console.log('ERROR: ', err);
                 });
-            }
-        }
+            };
+        };
     } catch (err) {
         console.log(err);
         if (err.code == 'RequestLimitExceeded') {
             console.log('RequestLimitExceeded, retryCount ', retryCount);
             await delay(retryCount);
             setRetention(cwlClient, retryCount + 1, err);
-        }
-    }
-}
+        };
+    };
+    return `Done processing ${cwlClient.config.region}`
+};
 
 exports.handler = async(event, context) => {
     let activeAccounts = await getActiveAccountIds({}); // get set of active accounts
     for (let id of outOfScopeAccounts) {
         activeAccounts.delete(id);
-    }
+    };
 
     let responses = [];
     for (let a of activeAccounts) {
@@ -69,7 +70,7 @@ exports.handler = async(event, context) => {
         for (let region of regions) {
             let params = {
                 credentials: creds,
-            }
+            };
             let cwl = new AWS.CloudWatchLogs({
                 region: region,
                 accessKeyId: params.credentials.Credentials.AccessKeyId,
@@ -77,13 +78,12 @@ exports.handler = async(event, context) => {
                 sessionToken: params.credentials.Credentials.SessionToken
             });
             responses.push(setRetention(cwl));
-        }
-    }
+        };
+    };
 
-    console.log(responses);
-    Promise.all(responses).then((values) => {
+    await Promise.all(responses).then((values) => {
         for (let r of responses) {
             console.log('RESPONSES', r)
-        }
+        };
     });
-}
+};
